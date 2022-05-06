@@ -5,10 +5,10 @@
 public class Main {
 
     public static void main(String[] args) {
+        new Appeal().start();
 
-        // temp one thread
-        new Judge().run();
+        new Judge().start();
 
-        new Adjudge().run();
+        new Adjudge().start();
     }
 }

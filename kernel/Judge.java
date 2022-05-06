@@ -1,6 +1,5 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 /**
  * @author Jin
@@ -10,22 +9,25 @@ public class Judge extends Thread {
 
     @Override
     public void run() {
-        appeal();
-        balance();
+
+        for (;;) {
+
+            if (ReceiveQueue.EVENTS.size() > 0) {
+                try {
+                    balance();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 
-    private void appeal() {
-        System.out.println("tell me the truth..");
-        Scanner sco = new Scanner(System.in);
-        String event = sco.next();
-        Receiver.appeal(event);
-    }
-
-    private void balance() {
+    private void balance() throws InterruptedException {
         Map<String, Boolean> result = new HashMap<>();
         String event = ReceiveQueue.EVENTS.poll();
 
         // balance core algorithm
+        // Thread.sleep(10000);
         Boolean balance = false;
 
         result.put(event, balance);
