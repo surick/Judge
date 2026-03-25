@@ -42,7 +42,7 @@ export const AVAILABLE_MODELS: Model[] = [
   },
   {
     id: 'deepseek-chat',
-    name: 'DeepSeek Chat',
+    name: 'DeepSeek',
     provider: 'deepseek',
     description: '国产优秀模型，中文能力强',
     maxTokens: 64000,

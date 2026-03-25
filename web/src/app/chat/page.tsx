@@ -25,7 +25,6 @@ function ChatPageContent() {
   const [selectedModel, setSelectedModel] = useState<string>('');
   const [isLoadingModels, setIsLoadingModels] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [showModelSelector, setShowModelSelector] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -110,7 +109,6 @@ function ChatPageContent() {
   };
 
   const availableModels = models.filter(m => m.available);
-  const selectedModelInfo = availableModels.find(m => m.id === selectedModel);
 
   return (
     <div className="flex h-screen bg-black">
@@ -145,66 +143,6 @@ function ChatPageContent() {
               </button>
             </div>
 
-            {/* Model Selector */}
-            <div className="p-4 border-b border-white/5">
-              <button
-                onClick={() => setShowModelSelector(!showModelSelector)}
-                className="w-full p-3 bg-white/5 hover:bg-white/8 rounded-xl transition-colors flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-cyan-500 flex items-center justify-center">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div className="text-left">
-                    <div className="text-sm font-medium text-white">
-                      {isLoadingModels ? '加载中...' : selectedModelInfo?.name || '选择模型'}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {selectedModelInfo?.provider || '点击切换'}
-                    </div>
-                  </div>
-                </div>
-                <svg className={cn('w-4 h-4 text-gray-400 transition-transform', showModelSelector && 'rotate-180')} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {showModelSelector && (
-                <div className="mt-2 bg-[#2d2d2d] rounded-xl overflow-hidden animate-fade-in">
-                  {availableModels.map((model) => (
-                    <button
-                      key={model.id}
-                      onClick={() => {
-                        setSelectedModel(model.id);
-                        setShowModelSelector(false);
-                      }}
-                      className={cn(
-                        'w-full p-3 text-left hover:bg-white/5 transition-colors flex items-center justify-between',
-                        selectedModel === model.id && 'bg-white/5'
-                      )}
-                    >
-                      <div>
-                        <div className="text-sm font-medium text-white">{model.name}</div>
-                        <div className="text-xs text-gray-500">{model.provider}</div>
-                      </div>
-                      {selectedModel === model.id && (
-                        <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      )}
-                    </button>
-                  ))}
-                  {availableModels.length === 0 && !isLoadingModels && (
-                    <div className="p-4 text-center text-gray-500 text-sm">
-                      暂无可用模型<br />
-                      <span className="text-xs">请配置 API Key</span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
 
             {/* Example Queries */}
             <div className="flex-1 overflow-y-auto p-4">
@@ -248,14 +186,7 @@ function ChatPageContent() {
             </svg>
           </button>
 
-          <div className="flex items-center gap-3">
-            {selectedModelInfo && (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-full">
-                <div className="w-2 h-2 rounded-full bg-green-400" />
-                <span className="text-sm text-gray-400">{selectedModelInfo.name}</span>
-              </div>
-            )}
-          </div>
+          <div className="flex items-center gap-3" />
 
           <Link
             href="/"
