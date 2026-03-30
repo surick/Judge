@@ -1,265 +1,367 @@
-import Link from 'next/link';
+'use client';
 
-export default function Home() {
+import Link from 'next/link';
+import { useInView } from '@/hooks/useInView';
+
+/* ────────────────────────────────────────
+   Scroll-reveal wrapper
+   ──────────────────────────────────────── */
+function Reveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const { ref, isInView } = useInView(0.15);
   return (
-    <main className="min-h-screen bg-black gradient-mesh overflow-hidden">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-              </svg>
-            </div>
-            <span className="text-lg font-semibold text-white">Judge</span>
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ease-out ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────
+   Navigation
+   ──────────────────────────────────────── */
+function Navigation() {
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 glass">
+      <div className="max-w-[980px] mx-auto px-6 h-12 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+            </svg>
           </div>
-          <div className="flex items-center gap-3">
-            <a
-              href="https://github.com/surick/Judge"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-sm font-medium text-gray-300 hover:text-white transition-all"
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-              </svg>
-              <span className="hidden sm:inline">Star</span>
-            </a>
+          <span className="text-sm font-semibold text-[#f5f5f7]">Judge</span>
+        </Link>
+
+        {/* Nav links */}
+        <div className="hidden sm:flex items-center gap-6 text-xs text-[#86868b]">
+          <a href="#features" className="hover:text-[#f5f5f7] transition-colors">特性</a>
+          <a href="#examples" className="hover:text-[#f5f5f7] transition-colors">场景</a>
+          <a href="#about" className="hover:text-[#f5f5f7] transition-colors">关于</a>
+        </div>
+
+        {/* CTA */}
+        <div className="flex items-center gap-3">
+          <a
+            href="https://github.com/surick/Judge"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs text-[#86868b] hover:text-[#f5f5f7] transition-colors"
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+            </svg>
+          </a>
+          <Link
+            href="/chat"
+            className="text-xs font-medium text-[#f5f5f7] bg-[#0071e3] hover:bg-[#0077ed] px-4 py-1.5 rounded-full transition-colors"
+          >
+            开始使用
+          </Link>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+/* ────────────────────────────────────────
+   Hero Section (Dark)
+   ──────────────────────────────────────── */
+function HeroSection() {
+  return (
+    <section className="relative min-h-screen flex flex-col items-center justify-center bg-black overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-blue-500/10 rounded-full blur-[120px]" />
+      </div>
+
+      <div className="relative z-10 text-center max-w-[720px] mx-auto px-6 pt-12">
+        {/* Eyebrow */}
+        <Reveal>
+          <p className="text-[#86868b] text-lg mb-4">全新上线</p>
+        </Reveal>
+
+        {/* Title */}
+        <Reveal delay={100}>
+          <h1 className="text-[clamp(3rem,8vw,5.5rem)] font-semibold leading-[1.05] tracking-tight text-[#f5f5f7] mb-6">
+            Judge.
+          </h1>
+        </Reveal>
+
+        {/* Subtitle */}
+        <Reveal delay={200}>
+          <p className="text-[clamp(1.2rem,2.5vw,1.6rem)] text-[#86868b] leading-relaxed mb-8 text-balance">
+            AI 驱动的智能法律助手。<br className="hidden sm:block" />
+            让每个人都能获得专业的法律分析。
+          </p>
+        </Reveal>
+
+        {/* CTA */}
+        <Reveal delay={300}>
+          <div className="flex items-center justify-center gap-4 flex-wrap">
             <Link
               href="/chat"
-              className="px-5 py-2 bg-white/10 hover:bg-white/15 rounded-full text-sm font-medium text-white transition-all"
+              className="text-lg font-medium text-[#2997ff] hover:underline underline-offset-4 inline-flex items-center gap-1.5"
             >
-              开始使用
+              开始免费咨询
+              <span className="text-sm">&gt;</span>
             </Link>
           </div>
+        </Reveal>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+        <div className="w-6 h-10 rounded-full border-2 border-[#424245] flex items-start justify-center p-1.5">
+          <div className="w-1 h-2.5 bg-[#86868b] rounded-full animate-bounce" />
         </div>
-      </nav>
+      </div>
+    </section>
+  );
+}
 
-      {/* Hero Section */}
-      <section className="min-h-screen flex flex-col items-center justify-center px-6 pt-20">
-        <div className="text-center max-w-4xl mx-auto">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 animate-fade-in-down">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-sm text-gray-400">AI 驱动的智能法律助手</span>
-          </div>
+/* ────────────────────────────────────────
+   Feature Tile — full-width card
+   ──────────────────────────────────────── */
+function FeatureTile({
+  title,
+  subtitle,
+  description,
+  dark = false,
+  children,
+}: {
+  title: string;
+  subtitle: string;
+  description: string;
+  dark?: boolean;
+  children?: React.ReactNode;
+}) {
+  const textColor = dark ? 'text-[#f5f5f7]' : 'text-[#1d1d1f]';
+  const subColor = dark ? 'text-[#86868b]' : 'text-[#6e6e73]';
+  const descColor = dark ? 'text-[#a1a1a6]' : 'text-[#86868b]';
+  const bgColor = dark ? 'bg-[#101010]' : 'bg-[#f5f5f7]';
 
-          {/* Title */}
-          <h1 className="heading-xl text-white mb-6 animate-fade-in-up stagger-1">
-            让法律咨询<br />
-            <span className="gradient-text">触手可及</span>
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-body max-w-2xl mx-auto mb-10 animate-fade-in-up stagger-2">
-            Judge 基于先进的大语言模型，为您提供专业、客观的法律分析。
-            无论是消费者权益、劳动纠纷还是合同问题，都能获得权威的法律建议。
+  return (
+    <Reveal>
+      <div className={`${bgColor} rounded-[28px] overflow-hidden`}>
+        <div className="max-w-[720px] mx-auto text-center py-20 px-8">
+          <p className={`text-sm ${subColor} mb-2`}>{subtitle}</p>
+          <h2 className={`text-[clamp(2rem,5vw,3rem)] font-semibold leading-tight tracking-tight ${textColor} mb-4`}>
+            {title}
+          </h2>
+          <p className={`text-lg ${descColor} max-w-lg mx-auto mb-6`}>
+            {description}
           </p>
+          {children}
+        </div>
+      </div>
+    </Reveal>
+  );
+}
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up stagger-3">
-            <Link href="/chat" className="btn-primary">
-              <span>开始免费咨询</span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
-            <a href="#features" className="btn-secondary">
-              了解更多
-            </a>
+/* ────────────────────────────────────────
+   Features Section
+   ──────────────────────────────────────── */
+function FeaturesSection() {
+  return (
+    <section id="features" className="bg-black py-3 px-3 sm:px-4 space-y-3">
+      {/* Tile 1: 公正客观 */}
+      <FeatureTile
+        subtitle="公正分析"
+        title="公正客观的法律判断。"
+        description="基于法律条文进行分析，不受个人情感影响，给出客观中立的法律判断。"
+        dark={false}
+      >
+        <div className="flex items-center justify-center gap-6 mt-8">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg">
+            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+            </svg>
           </div>
         </div>
+      </FeatureTile>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-          <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
+      {/* Tile 2: 权威引用 */}
+      <FeatureTile
+        subtitle="权威依据"
+        title="引用真实法律条文。"
+        description="引用真实法律条文、司法解释和政府公文，所有依据可追溯、可验证。"
+        dark={true}
+      >
+        <div className="grid grid-cols-3 gap-4 max-w-md mx-auto mt-8">
+          {['民法典', '消费者权益保护法', '劳动合同法'].map((law) => (
+            <div key={law} className="bg-white/5 rounded-xl px-3 py-2 text-center">
+              <span className="text-xs text-[#86868b]">{law}</span>
+            </div>
+          ))}
         </div>
-      </section>
+      </FeatureTile>
 
-      {/* Features Section */}
-      <section id="features" className="py-32 px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-20">
-            <h2 className="heading-lg text-white mb-4">为何选择 Judge</h2>
-            <p className="text-body max-w-xl mx-auto">
-              我们致力于让每个人都能获得专业的法律帮助
+      {/* Tile 3: 维权指引 */}
+      <FeatureTile
+        subtitle="行动指南"
+        title="具体可行的维权路径。"
+        description="提供具体可行的维权途径，包括投诉渠道、诉讼流程和注意事项。"
+        dark={false}
+      >
+        <div className="flex items-center justify-center gap-3 mt-8">
+          {[
+            { step: '1', label: '描述问题' },
+            { step: '2', label: 'AI 分析' },
+            { step: '3', label: '获取建议' },
+          ].map((item) => (
+            <div key={item.step} className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-lg">
+                {item.step}
+              </div>
+              <span className="text-sm text-[#6e6e73]">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </FeatureTile>
+    </section>
+  );
+}
+
+/* ────────────────────────────────────────
+   Examples Section (Dark)
+   ──────────────────────────────────────── */
+function ExamplesSection() {
+  const examples = [
+    { icon: '🛒', question: '买到了过期食品，商家拒绝赔偿怎么办？', category: '消费者权益' },
+    { icon: '💼', question: '公司拖欠工资三个月了，该如何维权？', category: '劳动纠纷' },
+    { icon: '🏠', question: '租房合同到期房东不退押金，怎么处理？', category: '房屋租赁' },
+    { icon: '📦', question: '网购商品与描述不符，能否要求退一赔三？', category: '电子商务' },
+  ];
+
+  return (
+    <section id="examples" className="bg-black py-24 px-6">
+      <div className="max-w-[980px] mx-auto">
+        <Reveal>
+          <div className="text-center mb-16">
+            <p className="text-[#86868b] text-sm mb-2">使用场景</p>
+            <h2 className="text-[clamp(2rem,5vw,3rem)] font-semibold leading-tight tracking-tight text-[#f5f5f7] mb-4">
+              你可以这样问。
+            </h2>
+            <p className="text-lg text-[#86868b] max-w-lg mx-auto">
+              涵盖日常生活中的各类法律场景。
             </p>
           </div>
+        </Reveal>
 
-          {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-6">
-            <FeatureCard
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-                </svg>
-              }
-              title="公正客观"
-              description="基于法律条文进行分析，不受个人情感影响，给出客观中立的法律判断"
-              delay={1}
-            />
-            <FeatureCard
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              }
-              title="权威引用"
-              description="引用真实法律条文、司法解释和政府公文，所有依据可追溯、可验证"
-              delay={2}
-            />
-            <FeatureCard
-              icon={
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              }
-              title="维权指引"
-              description="提供具体可行的维权途径，包括投诉渠道、诉讼流程和注意事项"
-              delay={3}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Example Section */}
-      <section className="py-32 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="heading-lg text-white mb-4">你可以这样问</h2>
-            <p className="text-body">涵盖日常生活中的各类法律场景</p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            {[
-              {
-                icon: '🛒',
-                question: '买到了过期食品，商家拒绝赔偿怎么办？',
-                category: '消费者权益',
-              },
-              {
-                icon: '💼',
-                question: '公司拖欠工资三个月了，该如何维权？',
-                category: '劳动纠纷',
-              },
-              {
-                icon: '🏠',
-                question: '租房合同到期房东不退押金，怎么处理？',
-                category: '房屋租赁',
-              },
-              {
-                icon: '📦',
-                question: '网购商品与描述不符，能否要求退一赔三？',
-                category: '电子商务',
-              },
-            ].map((item, index) => (
+        <div className="grid sm:grid-cols-2 gap-4">
+          {examples.map((item, index) => (
+            <Reveal key={index} delay={index * 100}>
               <Link
-                key={index}
                 href={`/chat?q=${encodeURIComponent(item.question)}`}
-                className="card-glass group animate-fade-in-up"
-                style={{ animationDelay: `${0.1 * (index + 1)}s` }}
+                className="group block bg-[#161617] hover:bg-[#1c1c1e] rounded-2xl p-6 transition-all duration-300"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl flex-shrink-0 group-hover:bg-white/10 transition-colors">
                     {item.icon}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs text-gray-500 mb-1">{item.category}</div>
-                    <p className="text-gray-300 group-hover:text-white transition-colors">
+                    <div className="text-xs text-[#6e6e73] mb-1.5 uppercase tracking-wider">{item.category}</div>
+                    <p className="text-[#a1a1a6] group-hover:text-[#f5f5f7] transition-colors text-[15px] leading-relaxed">
                       {item.question}
                     </p>
                   </div>
-                  <svg className="w-5 h-5 text-gray-500 group-hover:text-white group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <svg
+                    className="w-5 h-5 text-[#48484a] group-hover:text-[#f5f5f7] group-hover:translate-x-1 transition-all flex-shrink-0 mt-1"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
                   </svg>
                 </div>
               </Link>
-            ))}
-          </div>
+            </Reveal>
+          ))}
         </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-32 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="card-glass text-center py-16 px-8">
-            <h2 className="heading-md text-white mb-4">准备好开始了吗？</h2>
-            <p className="text-body max-w-lg mx-auto mb-8">
-              免费使用，无需注册。立即获得专业的法律建议。
-            </p>
-            <Link href="/chat" className="btn-primary inline-flex">
-              开始免费咨询
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-12 px-6 border-t border-white/5">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-                </svg>
-              </div>
-              <span className="font-semibold text-white">Judge</span>
-            </div>
-            <p className="text-caption text-center">
-              ⚠️ 本系统仅供参考，不构成法律意见。重大法律问题请咨询专业律师。
-            </p>
-            <div className="flex items-center gap-4">
-              <a
-                href="https://github.com/surick/Judge"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-white transition-colors"
-                aria-label="GitHub"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                </svg>
-              </a>
-              <span className="text-caption">
-                © 2024 Judge. All rights reserved.
-              </span>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </main>
+      </div>
+    </section>
   );
 }
 
-function FeatureCard({
-  icon,
-  title,
-  description,
-  delay,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  delay: number;
-}) {
+/* ────────────────────────────────────────
+   CTA Section (Light)
+   ──────────────────────────────────────── */
+function CTASection() {
   return (
-    <div
-      className="card-glass animate-fade-in-up"
-      style={{ animationDelay: `${0.1 * delay}s` }}
-    >
-      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-600/20 flex items-center justify-center mb-6 text-blue-400">
-        {icon}
+    <section className="bg-[#f5f5f7] py-28 px-6">
+      <div className="max-w-[720px] mx-auto text-center">
+        <Reveal>
+          <p className="text-[#6e6e73] text-sm mb-2">免费使用</p>
+          <h2 className="text-[clamp(2rem,5vw,3.5rem)] font-semibold leading-tight tracking-tight text-[#1d1d1f] mb-4">
+            准备好了吗？
+          </h2>
+          <p className="text-lg text-[#6e6e73] mb-8 max-w-md mx-auto">
+            免费使用，无需注册。立即获得专业的法律建议。
+          </p>
+          <Link
+            href="/chat"
+            className="inline-flex items-center gap-2 text-lg font-medium text-white bg-[#0071e3] hover:bg-[#0077ed] px-8 py-3.5 rounded-full transition-colors"
+          >
+            开始免费咨询
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </Link>
+        </Reveal>
       </div>
-      <h3 className="text-lg font-semibold text-white mb-3">{title}</h3>
-      <p className="text-gray-400 leading-relaxed">{description}</p>
-    </div>
+    </section>
+  );
+}
+
+/* ────────────────────────────────────────
+   Footer (Apple-style)
+   ──────────────────────────────────────── */
+function Footer() {
+  return (
+    <footer id="about" className="bg-[#f5f5f7] border-t border-[#d2d2d7] py-6 px-6">
+      <div className="max-w-[980px] mx-auto">
+        {/* Disclaimer */}
+        <div className="py-3 border-b border-[#d2d2d7] mb-4">
+          <p className="text-xs text-[#6e6e73] leading-relaxed">
+            ⚠️ 本系统仅供参考，不构成法律意见。重大法律问题请咨询专业律师。
+          </p>
+        </div>
+
+        {/* Bottom */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-4">
+            <span className="text-xs text-[#6e6e73]">Copyright &copy; 2024 Judge. All rights reserved.</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/surick/Judge"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-[#6e6e73] hover:text-[#1d1d1f] transition-colors"
+            >
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ────────────────────────────────────────
+   Page
+   ──────────────────────────────────────── */
+export default function Home() {
+  return (
+    <main className="bg-black">
+      <Navigation />
+      <HeroSection />
+      <FeaturesSection />
+      <ExamplesSection />
+      <CTASection />
+      <Footer />
+    </main>
   );
 }
