@@ -23,7 +23,7 @@ function ChatPageContent() {
 
   const [models, setModels] = useState<Model[]>([]);
   const [selectedModel, setSelectedModel] = useState<string>('');
-  const [isLoadingModels, setIsLoadingModels] = useState(true);
+  const [, setIsLoadingModels] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -205,11 +205,10 @@ function ChatPageContent() {
             <WelcomeScreen onExampleClick={handleExampleClick} />
           ) : (
             <div className="max-w-3xl mx-auto py-8 px-4">
-              {messages.map((message, index) => (
+              {messages.map((message) => (
                 <MessageItem
                   key={message.id}
                   message={message}
-                  isLast={index === messages.length - 1}
                 />
               ))}
               {isLoading && messages[messages.length - 1]?.role === 'user' && (
@@ -341,10 +340,8 @@ function WelcomeScreen({ onExampleClick }: { onExampleClick: (query: string) => 
 
 function MessageItem({
   message,
-  isLast
 }: {
   message: { id: string; role: string; content: string };
-  isLast: boolean;
 }) {
   const isUser = message.role === 'user';
 

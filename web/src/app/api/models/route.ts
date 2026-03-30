@@ -1,5 +1,5 @@
 import { AVAILABLE_MODELS } from '@/types/model';
-import { getAvailableProviders, getProvider } from '@/lib/llm/providers';
+import { getAvailableProviders } from '@/lib/llm/providers';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';
